@@ -8,6 +8,8 @@ function App() {
     projects: []
   })
 
+  // console.log("projects", projects)
+
   function handleStartProject() {
     setProjects((prevProjects) => { return {
       ...prevProjects,
@@ -21,6 +23,7 @@ function App() {
       const newProject = {...projectData, id: Math.random()}
       return {
         ...prevProjects,
+        selectedProjectId: undefined,
         projects: [...prevProjects.projects, newProject]
       }
     })
@@ -34,7 +37,7 @@ function App() {
   }
   return (
     <main className="h-screen my-8 flex gap-8">
-      <SideBar onStartProject={handleStartProject}/>
+      <SideBar onStartProject={handleStartProject} projects={projects.projects}/>
       {content}
     </main>
   );
