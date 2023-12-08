@@ -6,10 +6,29 @@ import SideBar from "./components/SideBar";
 function App() {
   const [projects, setProjects] = useState({
     selectedProjectId: undefined,
-    projects: []
+    projects: [],
+    tasks: []
   })
 
-  // console.log("projects", projects)
+  function handleAddTask(text) {
+    setProjects(prevState => {
+      const taskId = Math.random();
+      const newTask = {text: text, id: taskId, projectId: prevState.selectedProjectId}
+      return {
+        ...prevState,
+        selectedProjectId: undefined,
+        tasks: [...prevState.tasks, newTask]
+      }
+    })
+  }
+  function handleDeleteTask(id) {
+    setProjects((prevState) => { return {
+      ...prevState,
+      tasks: prevState.tasks.filter((task) => task.id !== id)
+      }
+    })
+
+  }
 
   function handleStartProject() {
     setProjects((prevProjects) => { return {
@@ -56,7 +75,7 @@ function App() {
   }
 
   const selectedProject = projects.projects.find((project) => project.id === projects.selectedProjectId)
-  let content = <SelectedProject project={selectedProject} onDelete={handleDelete}/>
+  let content = <SelectedProject project={selectedProject} onDelete={handleDelete} onAddTask={handleAddTask} onDeleteTask={handleDeleteTask} tasks={projects.tasks}/>
   if (projects.selectedProjectId === null) {
     content = <NewProject onAdd={handleAddProject} onCancel={handleCancel} />
   } else if (projects.selectedProjectId === undefined) {
